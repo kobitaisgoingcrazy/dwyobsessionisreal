@@ -76,45 +76,55 @@ button{
 
 .ribbon{
   position:absolute;
-  top:8px;
+  top:10px;
   left:50%;
+  width:34px;
+  height:22px;
   transform:translateX(-50%);
-  width:76%;
-  height:12px;
-  border-radius:999px;
-  background:linear-gradient(90deg,#ffd5e8,#ffc1de,#ffb8d8,#ffd2e7);
-  box-shadow:0 2px 0 rgba(190,95,141,.2), 0 8px 14px rgba(241,153,194,.25);
+  border-radius:42% 42% 45% 45%;
+  background:linear-gradient(160deg,#ffdcec,#ffc9e1 60%,#f5a8c8);
+  box-shadow:0 3px 8px rgba(174,95,136,.28);
+  z-index:3;
 }
 .ribbon::before,
 .ribbon::after{
   content:"";
   position:absolute;
-  top:3px;
-  width:16px;
-  height:16px;
-  background:linear-gradient(145deg,#ffd6e9,#ffb7d6);
-  border-radius:4px;
-  box-shadow:0 2px 4px rgba(170,92,134,.2);
+  top:-3px;
+  width:34px;
+  height:26px;
+  background:linear-gradient(160deg,#ffe6f1,#ffcde2 65%,#f7b1d0);
+  border-radius:58% 42% 52% 48% / 55% 48% 52% 45%;
+  box-shadow:0 3px 8px rgba(174,95,136,.2);
 }
 .ribbon::before{
-  left:-6px;
-  transform:rotate(38deg);
+  left:-24px;
+  transform:rotate(-14deg);
 }
 .ribbon::after{
-  right:-6px;
-  transform:rotate(-38deg);
+  right:-24px;
+  transform:rotate(14deg) scaleX(-1);
 }
-.photo-card::before{
+.photo-card::before,
+.photo-card::after{
   content:"";
   position:absolute;
-  top:3px;
+  top:27px;
+  width:17px;
+  height:52px;
+  background:linear-gradient(180deg,#ffd7e9,#ffc3de 70%,#f4a6c6);
+  box-shadow:0 3px 7px rgba(174,95,136,.2);
+  z-index:2;
+}
+.photo-card::before{
   left:50%;
-  width:18px;
-  height:18px;
-  transform:translateX(-50%) rotate(45deg);
-  border-radius:5px;
-  background:linear-gradient(145deg,#ffcae2,#f9aeca);
-  box-shadow:0 2px 6px rgba(170,80,124,.22);
+  transform:translateX(-118%) rotate(8deg);
+  clip-path:polygon(15% 0,100% 0,78% 100%,0 82%);
+}
+.photo-card::after{
+  left:50%;
+  transform:translateX(18%) rotate(-8deg);
+  clip-path:polygon(0 0,85% 0,100% 82%,22% 100%);
 }
 
 .photo-card img{
@@ -168,4 +178,5 @@ button{
   .gallery{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
   button{width:100%;}
 }
+
 
