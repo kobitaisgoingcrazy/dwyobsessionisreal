@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuangQuin Dream Garden</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1 id="title">DuangQuin Dream Garden</h1>
+  <p class="subtitle">Pastel memories, quiz fun, dolphin love, and hidden easter eggs</p>
+
+
+  <div class="card">
+    <h2>Quin's Dolphin Love Meter</h2>
+    <div class="meter"><div id="fill" class="meter-fill"></div></div>
+    <p id="meterText">Love Level: 18%</p>
+    <div class="row">
+      <button id="addLove">+ Add Dolphin Love</button>
+      <button id="heartBtn">Spawn Hearts</button>
+    </div>
+    <p id="secret">Easter Egg Unlocked: "pip pip pip quin!"</p>
+  </div>
+
+  <div class="card">
+    <h2>Duang or Quin?</h2>
+    <p id="qText"></p>
+    <div class="row">
+      <button id="aBtn"></button>
+      <button id="bBtn"></button>
+    </div>
+    <p id="qResult"></p>
+  </div>
+
+  <h2 class="gallery-title">Duang With You Memory Wall</h2>
+  <div id="gallery" class="gallery"></div>
+  <div id="scrollTrigger"></div>
+
+  <audio id="bgm" loop>
+    <source src="{{ url_for('static', filename='sounds/duang.mp3') }}" type="audio/mpeg">
+  </audio>
+
+  <script id="images-data" type="application/json">{{ images|tojson }}</script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
