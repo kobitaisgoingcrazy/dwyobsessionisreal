@@ -120,21 +120,46 @@ document.getElementById("title").onclick = () => {
 
 // Polaroid notes
 const notePool = [
-  "Duang: Quin, if your day is heavy, put half of it on my shoulder.",
-  "Quin: Duang, why are you smiling? Duang: Because you looked at me for two seconds longer.",
-  "Duang: Quin, we can be silly today. Quin: We already are. Duang: Perfect.",
-  "Quin: Duang, do you ever get tired of me? Duang: I only get tired when you are far.",
-  "Duang: Quin, hold my hand. Quin: Why? Duang: So my heart stops running laps.",
-  "Quin: Duang, one kiss and sleep. Duang: One kiss, then three bonus kisses.",
-  "Duang: Quin, your voice feels like warm tea on rainy evenings.",
-  "Quin: Duang, stop staring. Duang: I am memorizing my favorite view.",
-  "Duang: Quin, love should feel safe. Quin: Then stay right here with me.",
-  "Quin: Duang, do we look obvious? Duang: Very. And I am proud of it.",
-  "Duang: Quin, if I overthink, hug me first and tease me second.",
-  "Quin: Duang, you are chaos. Duang: Yes, but only your chaos.",
-  "Duang: Quin, promise we keep this soft, honest, and silly forever.",
-  "Quin: Duang, home is not a place anymore. It is your laugh.",
-  "Duang: Quin, if the world gets loud, we will choose quiet together."
+  "Duang: Quin, drink this first. You look tired. Quin: You noticed again.",
+  "Quin: Why are you smiling at me? Duang: Seeing you is already a good day.",
+  "Duang: Come here, Quin. I owe you one warm hug and one silly joke.",
+  "Quin: You are clingy today. Duang: Only because you are my calm place.",
+  "Duang: If your heart feels loud, hold my hand until it slows down.",
+  "Quin: Do not overdo things for me. Duang: Too late, I love doing them.",
+  "Duang: You look cute in my shirt. Quin: Then stop staring and zip it for me.",
+  "Quin: Why count everything I say? Duang: Because every word from you matters.",
+  "Duang: If it rains, we stay in, share snacks, and be dramatic together.",
+  "Quin: You are impossible. Duang: Correct, but only with you.",
+  "Duang: Tell me honestly, are you upset? Quin: A little. Stay close.",
+  "Quin: Do not get sick again. Duang: Then keep taking care of me forever.",
+  "Duang: Your voice is my favorite evening song, Quin.",
+  "Quin: You really are soft with me. Duang: Because you are my person.",
+  "Duang: You nag like a wife. Quin: And you still smile every time.",
+  "Quin: Why are you so patient today? Duang: Loving you taught me patience.",
+  "Duang: If the world gets noisy, we choose quiet together.",
+  "Quin: Stop flirting in public. Duang: Then walk closer so I can whisper.",
+  "Duang: I brought your favorite drink. Quin: You always remember the small things.",
+  "Quin: You look proud. Duang: I am proud to be yours.",
+  "Duang: Give me one minute of your time. Quin: Take all of it.",
+  "Quin: Why are your ears red? Duang: You called my name too gently.",
+  "Duang: You make ordinary days feel like a festival, Quin.",
+  "Quin: Should we act normal? Duang: We can try tomorrow.",
+  "Duang: Hold still, Quin. Let me fix your hair.",
+  "Quin: Are you jealous? Duang: I am human, but I trust you.",
+  "Duang: Sit by me while I work. Quin: I only came to steal your shoulder.",
+  "Quin: You are laughing alone again. Duang: I remembered your sleepy face.",
+  "Duang: Promise me soft love, honest words, and silly nights.",
+  "Quin: I missed you. Duang: I counted minutes until this hug.",
+  "Duang: If you are hurt, tell me first. Quin: If you are hurt, same rule.",
+  "Quin: You always say I am cute. Duang: Because you always are.",
+  "Duang: Let me drive, Quin. You rest and hold my hand.",
+  "Quin: Do not spoil me too much. Duang: I plan to spoil you more.",
+  "Duang: Your smile is dangerous. Quin: Dangerous how? Duang: I lose focus.",
+  "Quin: You are staring again. Duang: I am memorizing home.",
+  "Duang: Tonight we heal with tea, music, and no overthinking.",
+  "Quin: Can we stay like this a bit longer? Duang: As long as you want.",
+  "Duang: Even your silence is kind to me, Quin.",
+  "Quin: Why do I feel safe here? Duang: Because I will not let go."
 ];
 
 // Infinite floating polaroid gallery
@@ -144,6 +169,7 @@ const trigger = document.getElementById("scrollTrigger");
 let idx = 0;
 const batchSize = 12;
 let io;
+let noteIdx = 0;
 
 function attachDoubleTap(card) {
   let lastTap = 0;
@@ -170,7 +196,8 @@ function addBatch() {
 
   for (let n = 0; n < batchSize && idx < allImages.length; n++) {
     const file = allImages[idx++];
-    const note = notePool[Math.floor(Math.random() * notePool.length)];
+    const note = notePool[noteIdx % notePool.length];
+    noteIdx++;
 
     const card = document.createElement("article");
     card.className = "photo-card";
@@ -194,6 +221,7 @@ function addBatch() {
 }
 
 shuffleList(allImages);
+shuffleList(notePool);
 addBatch();
 
 io = new IntersectionObserver((entries) => {
@@ -201,6 +229,10 @@ io = new IntersectionObserver((entries) => {
 }, { rootMargin: "260px" });
 
 io.observe(trigger);
+
+
+
+
 
 
 
