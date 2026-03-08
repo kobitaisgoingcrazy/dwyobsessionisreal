@@ -28,14 +28,16 @@ document.getElementById("addLove").onclick = () => {
   love = Math.min(100, love + 7);
   fill.style.width = love + "%";
   meterText.textContent = `Love Level: ${love}%`;
-  spawn("🐬");
+  spawn("*");
   if (love >= 90) secret.style.display = "block";
 };
 
 document.getElementById("heartBtn").onclick = () => {
   startAudio();
-  const chars = ["💗", "🫧", "✨"];
-  for (let i = 0; i < 12; i++) setTimeout(() => spawn(chars[i % chars.length]), i * 80);
+  const chars = ["<3", "o", "*"];
+  for (let i = 0; i < 12; i++) {
+    setTimeout(() => spawn(chars[i % chars.length]), i * 80);
+  }
 };
 
 // Quiz
@@ -65,15 +67,18 @@ const qs = [
   { q: "They say 'good night' early?", a: ["Wish sweet dreams", "duang"], b: ["Read tone like detective", "quin"] },
   { q: "You miss them badly?", a: ["Write cute note", "duang"], b: ["Book flight immediately", "quin"] }
 ];
-function shuffleQuestions(arr) {
+
+function shuffleList(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 }
 
-shuffleQuestions(qs);
-let qi = 0, d = 0, qn = 0;
+shuffleList(qs);
+let qi = 0;
+let d = 0;
+let qn = 0;
 const qText = document.getElementById("qText");
 const aBtn = document.getElementById("aBtn");
 const bBtn = document.getElementById("bBtn");
@@ -94,7 +99,7 @@ function pick(type) {
   aBtn.style.display = "none";
   bBtn.style.display = "none";
   qText.textContent = "Quiz complete!";
-  qResult.textContent = d >= qn ? "Result: DUANG energy 💙" : "Result: QUIN energy ❤️";
+  qResult.textContent = d >= qn ? "Result: DUANG energy" : "Result: QUIN energy";
 }
 
 aBtn.onclick = () => pick(qs[qi].a[1]);
@@ -106,43 +111,90 @@ let t = 0;
 document.getElementById("title").onclick = () => {
   startAudio();
   t++;
-  spawn("✨");
+  spawn("*");
   if (t === 5) {
     alert("Easter Egg: duangquin teeteeetee duang!");
     t = 0;
   }
 };
 
+// Polaroid notes
+const notePool = [
+  "Duang: If you are tired, come sit here. Me: Only if I can keep your hand.",
+  "Duang: We should act normal. Me: Too late, my smile already told on us.",
+  "Duang: You look serious today. Me: I am serious about loving you.",
+  "Duang: One kiss? Me: Approved. But interest grows every minute.",
+  "Duang: Why are you staring? Me: I am collecting comfort for rainy days.",
+  "Duang: I brought snacks. Me: Perfect, now bring your shoulder too.",
+  "Duang: Be honest, am I dramatic? Me: Yes, and that is my favorite genre.",
+  "Duang: Promise me forever? Me: I already wrote your name on it.",
+  "Duang: I missed you. Me: I counted every minute like a tiny poem.",
+  "Duang: We should sleep early. Me: After one more silly conversation.",
+  "Duang: Why are you smiling like that? Me: Because you exist.",
+  "Duang: What is your safe place? Me: Right beside your heartbeat."
+];
+
 // Infinite floating polaroid gallery
 const allImages = JSON.parse(document.getElementById("images-data").textContent);
 const gallery = document.getElementById("gallery");
 const trigger = document.getElementById("scrollTrigger");
 let idx = 0;
-const batchSize = 8;
+const batchSize = 12;
+
+function attachDoubleTap(card) {
+  let lastTap = 0;
+
+  const toggle = () => {
+    card.classList.toggle("show-note");
+    startAudio();
+  };
+
+  card.addEventListener("dblclick", toggle);
+
+  card.addEventListener("touchend", () => {
+    const now = Date.now();
+    if (now - lastTap < 320) toggle();
+    lastTap = now;
+  }, { passive: true });
+
+  const hintBtn = card.querySelector(".note-hint");
+  hintBtn.addEventListener("click", toggle);
+}
 
 function addBatch() {
+  if (!allImages.length) return;
+
   for (let n = 0; n < batchSize; n++) {
-    if (idx >= allImages.length) return;
+    if (idx >= allImages.length) {
+      idx = 0;
+      shuffleList(allImages);
+    }
+
     const file = allImages[idx++];
+    const note = notePool[Math.floor(Math.random() * notePool.length)];
 
     const card = document.createElement("article");
     card.className = "photo-card";
     card.style.setProperty("--tilt", `${(Math.random() * 8 - 4).toFixed(2)}deg`);
     card.style.setProperty("--delay", `${(Math.random() * 1.8).toFixed(2)}s`);
     card.innerHTML = `
+      <span class="ribbon" aria-hidden="true"></span>
       <img src="/static/images/${encodeURIComponent(file)}" alt="${file}">
       <p>Duang With You</p>
+      <button type="button" class="note-hint">Double tap for a note</button>
+      <div class="love-note">${note}</div>
     `;
+
+    attachDoubleTap(card);
     gallery.appendChild(card);
   }
 }
 
+shuffleList(allImages);
 addBatch();
 
 const io = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) addBatch();
-}, { rootMargin: "240px" });
+}, { rootMargin: "260px" });
 
 io.observe(trigger);
-
-
