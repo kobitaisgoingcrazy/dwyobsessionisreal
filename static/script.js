@@ -140,6 +140,7 @@ const gallery = document.getElementById("gallery");
 const trigger = document.getElementById("scrollTrigger");
 let idx = 0;
 const batchSize = 12;
+let io;
 
 function attachDoubleTap(card) {
   let lastTap = 0;
@@ -162,14 +163,9 @@ function attachDoubleTap(card) {
 }
 
 function addBatch() {
-  if (!allImages.length) return;
+  if (!allImages.length || idx >= allImages.length) return;
 
-  for (let n = 0; n < batchSize; n++) {
-    if (idx >= allImages.length) {
-      idx = 0;
-      shuffleList(allImages);
-    }
-
+  for (let n = 0; n < batchSize && idx < allImages.length; n++) {
     const file = allImages[idx++];
     const note = notePool[Math.floor(Math.random() * notePool.length)];
 
@@ -188,13 +184,20 @@ function addBatch() {
     attachDoubleTap(card);
     gallery.appendChild(card);
   }
+
+  if (idx >= allImages.length) {
+    if (io) io.disconnect();
+  }
 }
 
 shuffleList(allImages);
 addBatch();
 
-const io = new IntersectionObserver((entries) => {
+io = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) addBatch();
 }, { rootMargin: "260px" });
 
 io.observe(trigger);
+
+
+
