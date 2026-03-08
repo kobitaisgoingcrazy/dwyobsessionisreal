@@ -79,22 +79,42 @@ button{
   top:8px;
   left:50%;
   transform:translateX(-50%);
-  width:82%;
-  height:10px;
+  width:76%;
+  height:12px;
   border-radius:999px;
-  background:linear-gradient(90deg,#f5a3c6,#f189bb,#ffb0cf);
-  box-shadow:0 3px 0 rgba(172,58,110,.24);
+  background:linear-gradient(90deg,#ffd5e8,#ffc1de,#ffb8d8,#ffd2e7);
+  box-shadow:0 2px 0 rgba(190,95,141,.2), 0 8px 14px rgba(241,153,194,.25);
 }
+.ribbon::before,
 .ribbon::after{
   content:"";
   position:absolute;
-  top:-4px;
-  left:50%;
+  top:3px;
   width:16px;
   height:16px;
+  background:linear-gradient(145deg,#ffd6e9,#ffb7d6);
+  border-radius:4px;
+  box-shadow:0 2px 4px rgba(170,92,134,.2);
+}
+.ribbon::before{
+  left:-6px;
+  transform:rotate(38deg);
+}
+.ribbon::after{
+  right:-6px;
+  transform:rotate(-38deg);
+}
+.photo-card::before{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:50%;
+  width:18px;
+  height:18px;
   transform:translateX(-50%) rotate(45deg);
-  background:#f08bb9;
-  border-radius:3px;
+  border-radius:5px;
+  background:linear-gradient(145deg,#ffcae2,#f9aeca);
+  box-shadow:0 2px 6px rgba(170,80,124,.22);
 }
 
 .photo-card img{
@@ -148,3 +168,4 @@ button{
   .gallery{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
   button{width:100%;}
 }
+

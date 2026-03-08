@@ -120,18 +120,21 @@ document.getElementById("title").onclick = () => {
 
 // Polaroid notes
 const notePool = [
-  "Duang: If you are tired, come sit here. Me: Only if I can keep your hand.",
-  "Duang: We should act normal. Me: Too late, my smile already told on us.",
-  "Duang: You look serious today. Me: I am serious about loving you.",
-  "Duang: One kiss? Me: Approved. But interest grows every minute.",
-  "Duang: Why are you staring? Me: I am collecting comfort for rainy days.",
-  "Duang: I brought snacks. Me: Perfect, now bring your shoulder too.",
-  "Duang: Be honest, am I dramatic? Me: Yes, and that is my favorite genre.",
-  "Duang: Promise me forever? Me: I already wrote your name on it.",
-  "Duang: I missed you. Me: I counted every minute like a tiny poem.",
-  "Duang: We should sleep early. Me: After one more silly conversation.",
-  "Duang: Why are you smiling like that? Me: Because you exist.",
-  "Duang: What is your safe place? Me: Right beside your heartbeat."
+  "Duang: Quin, if your day is heavy, put half of it on my shoulder.",
+  "Quin: Duang, why are you smiling? Duang: Because you looked at me for two seconds longer.",
+  "Duang: Quin, we can be silly today. Quin: We already are. Duang: Perfect.",
+  "Quin: Duang, do you ever get tired of me? Duang: I only get tired when you are far.",
+  "Duang: Quin, hold my hand. Quin: Why? Duang: So my heart stops running laps.",
+  "Quin: Duang, one kiss and sleep. Duang: One kiss, then three bonus kisses.",
+  "Duang: Quin, your voice feels like warm tea on rainy evenings.",
+  "Quin: Duang, stop staring. Duang: I am memorizing my favorite view.",
+  "Duang: Quin, love should feel safe. Quin: Then stay right here with me.",
+  "Quin: Duang, do we look obvious? Duang: Very. And I am proud of it.",
+  "Duang: Quin, if I overthink, hug me first and tease me second.",
+  "Quin: Duang, you are chaos. Duang: Yes, but only your chaos.",
+  "Duang: Quin, promise we keep this soft, honest, and silly forever.",
+  "Quin: Duang, home is not a place anymore. It is your laugh.",
+  "Duang: Quin, if the world gets loud, we will choose quiet together."
 ];
 
 // Infinite floating polaroid gallery
@@ -198,6 +201,7 @@ io = new IntersectionObserver((entries) => {
 }, { rootMargin: "260px" });
 
 io.observe(trigger);
+
 
 
 
