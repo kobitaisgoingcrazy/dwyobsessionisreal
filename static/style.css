@@ -218,3 +218,38 @@ button{
   border-bottom:2px solid #d8c6f4;
 }
 .fan-link a:hover{opacity:.85}
+
+.fan-note-bubble{
+  width:min(92%,900px);
+  margin:8px auto 36px;
+  padding:16px 18px;
+  border-radius:20px;
+  border:1px solid #f0d7e6;
+  background:linear-gradient(135deg,#fff8fd,#fff1f8 60%,#ffeef7);
+  box-shadow:0 10px 24px rgba(110,58,93,.12);
+  position:relative;
+}
+.fan-note-bubble::after{
+  content:"";
+  position:absolute;
+  bottom:-12px;
+  left:58px;
+  width:24px;
+  height:24px;
+  background:#fff1f8;
+  border-left:1px solid #f0d7e6;
+  border-bottom:1px solid #f0d7e6;
+  transform:rotate(-45deg);
+}
+.fan-note-title{
+  margin:0 0 6px;
+  font-size:1rem;
+  font-weight:700;
+  color:#6d4f88;
+}
+.fan-note-text{
+  margin:0;
+  color:#654f63;
+  line-height:1.5;
+  font-weight:500;
+}
