@@ -180,3 +180,41 @@ button{
 }
 
 
+
+.fan-hero{
+  width:min(92%,860px);
+  margin:10px auto 18px;
+  padding:16px 18px;
+  border-radius:18px;
+  border:1px solid #f1d8ea;
+  background:linear-gradient(135deg,#fff7fc,#fff0f8 60%,#ffeaf5);
+  box-shadow:0 10px 24px rgba(117,57,97,.12);
+}
+.fan-badge{
+  margin:0 auto 8px;
+  width:max-content;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#f4c9df;
+  color:#6f3d63;
+  font-weight:700;
+  font-size:.82rem;
+  letter-spacing:.02em;
+}
+.fan-line{
+  margin:0 0 8px;
+  color:#594c66;
+  font-weight:600;
+}
+.fan-link{
+  margin:0;
+  font-size:.9rem;
+  color:#7e5f9f;
+}
+.fan-link a{
+  color:#6a49a4;
+  font-weight:700;
+  text-decoration:none;
+  border-bottom:2px solid #d8c6f4;
+}
+.fan-link a:hover{opacity:.85}
