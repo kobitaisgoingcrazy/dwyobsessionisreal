@@ -28,13 +28,13 @@ document.getElementById("addLove").onclick = () => {
   love = Math.min(100, love + 7);
   fill.style.width = love + "%";
   meterText.textContent = `Love Level: ${love}%`;
-  spawn("*");
+  spawn("\uD83D\uDC2C");
   if (love >= 90) secret.style.display = "block";
 };
 
 document.getElementById("heartBtn").onclick = () => {
   startAudio();
-  const chars = ["<3", "o", "*"];
+  const chars = ["\uD83D\uDC97", "\uD83D\uDC95", "\u2728"];
   for (let i = 0; i < 12; i++) {
     setTimeout(() => spawn(chars[i % chars.length]), i * 80);
   }
@@ -99,7 +99,7 @@ function pick(type) {
   aBtn.style.display = "none";
   bBtn.style.display = "none";
   qText.textContent = "Quiz complete!";
-  qResult.textContent = d >= qn ? "Result: DUANG energy" : "Result: QUIN energy";
+  qResult.textContent = d >= qn ? "Result: DUANG energy \uD83D\uDC99" : "Result: QUIN energy \u2764\uFE0F";
 }
 
 aBtn.onclick = () => pick(qs[qi].a[1]);
@@ -111,7 +111,7 @@ let t = 0;
 document.getElementById("title").onclick = () => {
   startAudio();
   t++;
-  spawn("*");
+  spawn("\u2728");
   if (t === 5) {
     alert("Easter Egg: duangquin teeteeetee duang!");
     t = 0;
@@ -229,6 +229,9 @@ io = new IntersectionObserver((entries) => {
 }, { rootMargin: "260px" });
 
 io.observe(trigger);
+
+
+
 
 
 
