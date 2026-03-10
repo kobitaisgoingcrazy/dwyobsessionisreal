@@ -250,7 +250,7 @@ function addBatch() {
       <span class="ribbon" aria-hidden="true"></span>
       <img src="/static/images/${encodeURIComponent(file)}" alt="${file}">
       <p>Duang With You</p>
-      <button type="button" class="note-hint">Double tap for a note</button>
+      <button type="button" class="note-hint">Tap it for your own good^^</button>
       <div class="love-note">${note}</div>
     `;
 
