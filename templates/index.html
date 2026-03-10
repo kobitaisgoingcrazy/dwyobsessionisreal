@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DuangQuin Dream Garden</title>
+  <title>DuangQin Dream Garden</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1 id="title">DuangQuin Dream Garden</h1>
-  <p class="subtitle">Pastel memories, quiz fun, dolphin love, and hidden easter eggs</p>
+  <h1 id="title">DuangQin Dream Garden</h1>
+  <p id="titleHint" class="title-hint">Click multiple times for the surprise</p>
+  <p class="subtitle">Pastel memories, quiz fun, whale love, and hidden easter eggs</p>
 
   <section class="fan-hero">
-    <p class="fan-badge">Official Fan Hub</p>
+    <p class="fan-badge">Unofficial Fanhub</p>
     <p class="fan-line">A cozy corner for every Duang With You fan: sweet memories, silly love, and healing vibes.</p>
     <p class="fan-link">
       Share this fan page:
@@ -20,18 +21,18 @@
   </section>
 
   <div class="card">
-    <h2>Quin's Dolphin Love Meter</h2>
+    <h2>Qin's Whale Love Meter</h2>
     <div class="meter"><div id="fill" class="meter-fill"></div></div>
     <p id="meterText">Love Level: 18%</p>
     <div class="row">
-      <button id="addLove">+ Add Dolphin Love</button>
+      <button id="addLove">+ Add Whale Love</button>
       <button id="heartBtn">Spawn Hearts</button>
     </div>
     <p id="secret">Easter Egg Unlocked: "pip pip pip quin!"</p>
   </div>
 
   <div class="card">
-    <h2>Duang or Quin?</h2>
+    <h2>Duang or Qin?</h2>
     <p id="qText"></p>
     <div class="row">
       <button id="aBtn"></button>
@@ -51,10 +52,26 @@
     </p>
   </section>
 
-  <div id="gallery" class="gallery"></div>
+  <div id="gallery" class="gallery">
+    <article class="music-card">
+      <div class="music-card-inner">
+        <div class="vinyl-pocket">
+          <div class="vinyl-record" aria-hidden="true">
+            <span class="vinyl-center"></span>
+          </div>
+          <div class="album-cover">
+            <p class="album-kicker">Now spinning</p>
+            <h3>dwy songs that make me feel loved</h3>
+            <p class="album-copy">Soft songs for gentle hearts, late-night healing, and duangqin daydreams.</p>
+            <button type="button" id="musicToggle" class="music-toggle">Play this mood</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
   <div id="scrollTrigger"></div>
 
-  <audio id="bgm" loop>
+  <audio id="bgm">
     <source src="{{ url_for('static', filename='sounds/duang.mp3') }}" type="audio/mpeg">
   </audio>
 
@@ -62,3 +79,4 @@
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
+

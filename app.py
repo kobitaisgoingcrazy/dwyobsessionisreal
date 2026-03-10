@@ -8,9 +8,11 @@ app = Flask(__name__)
 def home():
     img_dir = os.path.join(app.static_folder, "images")
 
+    blocked_terms = ("dolphin", "dolphine", "whale")
     images = [
         f for f in os.listdir(img_dir)
         if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp", ".jfif", ".avif"))
+        and not any(term in f.lower() for term in blocked_terms)
     ]
 
     random.shuffle(images)
