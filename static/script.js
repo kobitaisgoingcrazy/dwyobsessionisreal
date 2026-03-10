@@ -219,7 +219,6 @@ function attachDoubleTap(card) {
 
   const toggle = () => {
     card.classList.toggle("show-note");
-    startAudio();
   };
 
   card.addEventListener("dblclick", toggle);
