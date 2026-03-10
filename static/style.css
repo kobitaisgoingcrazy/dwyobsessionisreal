@@ -64,7 +64,7 @@ button{
 }
 .music-card{
   position:relative;
-  min-height:320px;
+  min-height:420px;
   border-radius:22px;
   padding:18px;
   background:linear-gradient(145deg,rgba(255,250,253,.94),rgba(255,241,248,.92));
@@ -86,81 +86,114 @@ button{
   align-items:center;
   justify-content:center;
 }
-.vinyl-pocket{
+.ipod-footer{
+  width:min(96%,1100px);
+  margin:24px auto 64px;
+  min-height:460px;
   position:relative;
-  width:min(100%,360px);
-  min-height:280px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
-.vinyl-record{
+.ipod-widget{
   position:absolute;
-  right:8px;
-  top:calc(50% - 84px);
-  width:168px;
-  aspect-ratio:1;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at center, #fce6f1 0 12px, #201520 13px 22px, #101010 23px 34px, #1c1c1c 35px 44px, #111 45px 54px, #191919 55px 64px, #0f0f0f 65px 100%);
-  box-shadow:0 16px 28px rgba(31,14,29,.28);
-  animation:spin-record 10s linear infinite;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+  width:min(92%,460px);
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
 }
-.vinyl-center{
+.ipod-widget.dragging{
+  cursor:grabbing;
+}
+.ipod-screen-panel{
   position:absolute;
-  inset:50%;
-  width:22px;
-  height:22px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:linear-gradient(180deg,#ffe2f0,#ffc1db);
-  box-shadow:0 0 0 6px rgba(255,236,245,.32);
-}
-.album-cover{
-  position:relative;
+  left:3.9%;
+  top:9.4%;
+  width:50.8%;
+  height:78.5%;
+  padding:12px 10px;
+  border-radius:8px;
+  background:linear-gradient(180deg,#fffdfa,#f8fff5 50%,#eef8e7);
+  border:0;
+  box-shadow:none;
+  text-align:center;
   z-index:1;
-  width:min(100%,250px);
-  min-height:250px;
-  padding:24px 22px;
-  border-radius:18px;
-  text-align:left;
-  background:linear-gradient(160deg,#ffeef7,#ffdbe9 55%,#f6bfd7);
-  box-shadow:0 16px 24px rgba(147,87,119,.2);
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  overflow:hidden;
 }
-.album-kicker{
-  margin:0 0 10px;
-  text-transform:uppercase;
+.ipod-kicker{
+  margin:0 0 8px;
+  font-size:.72rem;
   letter-spacing:.12em;
-  font-size:.68rem;
+  text-transform:uppercase;
+  color:#7d8675;
   font-weight:700;
-  color:#9c5c7d;
 }
-.album-cover h3{
+.ipod-cover{
+  width:78px;
+  aspect-ratio:1;
+  margin:0 auto 12px;
+  border-radius:12px;
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,.85) 0 10%, transparent 11%),
+    linear-gradient(140deg,#f6c3dc,#f7ebb2 42%,#c7efe1 70%,#d8d4ff);
+  box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,.55),
+    0 8px 16px rgba(120,83,108,.18);
+}
+.ipod-track{
   margin:0;
-  font-size:1.55rem;
+  color:#445048;
+  font-size:.88rem;
+  font-weight:700;
   line-height:1.15;
-  color:#6f4361;
 }
-.album-copy{
-  margin:14px 0 18px;
-  color:#7d5870;
-  font-size:.92rem;
-  line-height:1.45;
+.ipod-artist{
+  margin:8px 0 0;
+  color:#667668;
+  font-size:.66rem;
+  line-height:1.3;
 }
-.music-toggle{
-  align-self:flex-start;
-  padding:10px 16px;
-  border-radius:999px;
-  background:#fff8fc;
-  color:#8a4f77;
-  border:1px solid #efbdd4;
-  box-shadow:0 10px 18px rgba(155,88,122,.12);
+.ipod-image-wrap{
+  position:relative;
+  width:100%;
+  margin:0 auto;
 }
-.music-toggle:hover{
-  background:#fff0f7;
+.ipod-image{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 18px 26px rgba(112,58,85,.18));
+  pointer-events:none;
+}
+.ipod-hotspot{
+  position:absolute;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  padding:0;
+  z-index:3;
+  cursor:pointer;
+}
+.hotspot-left{
+  left:61.5%;
+  top:18%;
+  width:16%;
+  height:44%;
+  border-radius:60px 0 0 60px;
+}
+.hotspot-right{
+  left:82%;
+  top:18%;
+  width:16%;
+  height:44%;
+  border-radius:0 60px 60px 0;
+}
+.hotspot-center{
+  left:69%;
+  top:29%;
+  width:22%;
+  height:34%;
+  border-radius:50%;
 }
 .photo-card{
   --tilt:0deg;--delay:0s;
@@ -283,26 +316,18 @@ button{
   .card{width:92%;padding:16px;}
   .gallery{grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
   button{width:100%;}
-  .music-card{
-    min-height:auto;
+  .ipod-footer{
+    min-height:360px;
   }
-  .vinyl-pocket{
-    min-height:unset;
-    padding-top:154px;
+  .ipod-widget{
+    width:min(96%,340px);
   }
-  .vinyl-record{
-    top:18px;
-    right:calc(50% - 68px);
-    width:136px;
-  }
-  .album-cover{
-    width:100%;
-    min-height:230px;
-    text-align:center;
-    align-items:center;
-  }
-  .music-toggle{
-    align-self:center;
+  .ipod-screen-panel{
+    left:3.9%;
+    top:9.4%;
+    width:50.8%;
+    height:78.5%;
+    padding:8px 7px;
   }
 }
 
@@ -381,7 +406,3 @@ button{
   font-weight:500;
 }
 
-@keyframes spin-record{
-  from{rotate:0deg}
-  to{rotate:360deg}
-}

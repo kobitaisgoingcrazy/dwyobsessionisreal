@@ -52,24 +52,25 @@
     </p>
   </section>
 
-  <div id="gallery" class="gallery">
-    <article class="music-card">
-      <div class="music-card-inner">
-        <div class="vinyl-pocket">
-          <div class="vinyl-record" aria-hidden="true">
-            <span class="vinyl-center"></span>
-          </div>
-          <div class="album-cover">
-            <p class="album-kicker">Now spinning</p>
-            <h3>dwy songs that make me feel loved</h3>
-            <p class="album-copy">Soft songs for gentle hearts, late-night healing, and duangqin daydreams.</p>
-            <button type="button" id="musicToggle" class="music-toggle">Play this mood</button>
-          </div>
-        </div>
-      </div>
-    </article>
-  </div>
+  <div id="gallery" class="gallery"></div>
   <div id="scrollTrigger"></div>
+
+  <section class="ipod-footer">
+    <div id="draggableIpod" class="ipod-widget">
+      <div class="ipod-image-wrap">
+        <img class="ipod-image" src="{{ url_for('static', filename='images/ipod-custom.png') }}" alt="Pink iPod player">
+        <div class="ipod-screen-panel">
+          <p class="ipod-kicker">comfort zone</p>
+          <div id="playlistCover" class="ipod-cover" aria-hidden="true"></div>
+          <p id="playlistTrack" class="ipod-track">Spotify track list goes here</p>
+          <p id="playlistArtist" class="ipod-artist">Add your playlist songs to rotate here</p>
+        </div>
+        <button type="button" id="playlistPrev" class="ipod-hotspot hotspot-left" aria-label="Previous track"></button>
+        <a id="spotifyOpen" class="ipod-hotspot hotspot-center" href="https://open.spotify.com/playlist/6EBXTjDmIEYooZcX7EZjh2?si=4806f31139c248d1" target="_blank" rel="noopener" aria-label="Open Spotify playlist"></a>
+        <button type="button" id="playlistNext" class="ipod-hotspot hotspot-right" aria-label="Next track"></button>
+      </div>
+    </div>
+  </section>
 
   <audio id="bgm">
     <source src="{{ url_for('static', filename='sounds/duang.mp3') }}" type="audio/mpeg">

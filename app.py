@@ -9,10 +9,12 @@ def home():
     img_dir = os.path.join(app.static_folder, "images")
 
     blocked_terms = ("dolphin", "dolphine", "whale")
+    blocked_files = {"ipod-custom.png", "ipod-player.svg"}
     images = [
         f for f in os.listdir(img_dir)
         if f.lower().endswith((".jpg", ".jpeg", ".png", ".webp", ".jfif", ".avif"))
         and not any(term in f.lower() for term in blocked_terms)
+        and f.lower() not in blocked_files
     ]
 
     random.shuffle(images)

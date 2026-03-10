@@ -1,12 +1,58 @@
 const bgm = document.getElementById("bgm");
-const musicToggle = document.getElementById("musicToggle");
 let audioStopTimer;
 const AUDIO_PREVIEW_MS = 6500;
 let audioPreviewActive = false;
+const playlistPrev = document.getElementById("playlistPrev");
+const playlistNext = document.getElementById("playlistNext");
+const playlistTrack = document.getElementById("playlistTrack");
+const playlistArtist = document.getElementById("playlistArtist");
+const playlistCover = document.getElementById("playlistCover");
+const draggableIpod = document.getElementById("draggableIpod");
+const ipodStage = document.querySelector(".ipod-footer");
+
+const playlistTracks = [
+  { title: "จบไม่จบ (Someday, Say Yes)", artist: "PROXIE", art: "url('/static/images/covers/Screenshot 2026-03-10 205056.png') center/cover no-repeat" },
+  { title: "Take Our Time", artist: "JINWOOK OF BUS, PHUTATCHAI OF BUS", art: "url('/static/images/covers/Screenshot 2026-03-10 205826.png') center/cover no-repeat" },
+  { title: "ไม่ซู้สแต่ไม่ท้อ (Don't Give Up)", artist: "TEETEE", art: "url('/static/images/covers/Screenshot 2026-03-10 205913.png') center/cover no-repeat" },
+  { title: "BOOM 1000%", artist: "TEETEE, North Chatchapon, Wave Thanapon", art: "url('/static/images/covers/Screenshot 2026-03-10 205940.png') center/cover no-repeat" },
+  { title: "จังหวะยอมรัก (Heart's Timing)", artist: "Por Suppakarn", art: "url('/static/images/covers/Screenshot 2026-03-10 210019.png') center/cover no-repeat" },
+  { title: "สิ่งที่แสนดี", artist: "Tattoo Colour", art: "url('/static/images/covers/sing-tee-saen-dee.png') center/cover no-repeat" },
+  { title: "จะรักฉันอยู่ไหม", artist: "NuNew", art: "url('/static/images/covers/Screenshot 2026-03-10 210054.png') center/cover no-repeat" },
+  { title: "ใกล้ใจ", artist: "Por Suppakarn", art: "url('/static/images/covers/Screenshot 2026-03-10 210110.png') center/cover no-repeat" },
+  { title: "17", artist: "Dept", art: "url('/static/images/covers/Screenshot 2026-03-10 210123.png') center/cover no-repeat" },
+  { title: "Her", artist: "YENTED, ARARYOZI, Chocolate - t", art: "url('/static/images/covers/Screenshot 2026-03-10 210139.png') center/cover no-repeat" },
+  { title: "น้อมรับคำทำนาย - THE SUN", artist: "Praesun, GUYGEEGEE", art: "url('/static/images/covers/Screenshot 2026-03-10 210151.png') center/cover no-repeat" },
+  { title: "เธอ ๆ เพื่อนเราชอบ (Guess Who?)", artist: "SERIOUS BACON", art: "url('/static/images/covers/Screenshot 2026-03-10 210201.png') center/cover no-repeat" },
+  { title: "Someone Someday", artist: "PROXIE", art: "url('/static/images/covers/Screenshot 2026-03-10 210210.png') center/cover no-repeat" },
+  { title: "14CM.", artist: "Polycat", art: "url('/static/images/covers/Screenshot 2026-03-10 210221.png') center/cover no-repeat" },
+  { title: "ใจเย็น", artist: "Pancake", art: "url('/static/images/covers/Screenshot 2026-03-10 210231.png') center/cover no-repeat" },
+  { title: "วันศุกร์", artist: "Plastic Plastic", art: "url('/static/images/covers/Screenshot 2026-03-10 210242.png') center/cover no-repeat" },
+  { title: "ว้าวุ่น (On A Date)", artist: "YENTED", art: "url('/static/images/covers/Screenshot 2026-03-10 210253.png') center/cover no-repeat" },
+  { title: "Baby", artist: "ADOY", art: "url('/static/images/covers/Screenshot 2026-03-10 210303.png') center/cover no-repeat" },
+  { title: "ให้ฉันดูแลเธอ", artist: "รถแห่วงคาโรจน์", art: "url('/static/images/covers/Screenshot 2026-03-10 210315.png') center/cover no-repeat" },
+  { title: "Obsessed", artist: "PUN, Jaonaay", art: "url('/static/images/covers/Screenshot 2026-03-10 210326.png') center/cover no-repeat" },
+  { title: "ปฏิเสธไม่ไหว", artist: "Lipta, No One Else", art: "url('/static/images/covers/Screenshot 2026-03-10 210336.png') center/cover no-repeat" },
+  { title: "It's Always You", artist: "Chet Baker", art: "url('/static/images/covers/Screenshot 2026-03-10 210349.png') center/cover no-repeat" },
+  { title: "อีกแล้ว", artist: "MEYOU", art: "url('/static/images/covers/Screenshot 2026-03-10 210358.png') center/cover no-repeat" },
+  { title: "ชาติหน้าช้าไป (K.O.)", artist: "Dept", art: "url('/static/images/covers/Screenshot 2026-03-10 210409.png') center/cover no-repeat" },
+  { title: "เวลา", artist: "Pop Pongkool", art: "url('/static/images/covers/Screenshot 2026-03-10 210422.png') center/cover no-repeat" },
+  { title: "เพราะเธอนั้นเป็นเหมือนดั่งโลกทั้งใบ", artist: "Dept", art: "url('/static/images/covers/Screenshot 2026-03-10 210434.png') center/cover no-repeat" },
+  { title: "คนเดียวบนโลก(U)", artist: "Anatomy Rabbit", art: "url('/static/images/covers/Screenshot 2026-03-10 210443.png') center/cover no-repeat" },
+  { title: "ฟ้าครึ้ม ๆ", artist: "SCRUBB", art: "url('/static/images/covers/Screenshot 2026-03-10 210453.png') center/cover no-repeat" }
+];
+let playlistIndex = 0;
 
 function updateMusicToggle() {
-  if (!musicToggle) return;
-  musicToggle.textContent = bgm.paused ? "Play this mood" : "Pause this mood";
+  return;
+}
+
+function renderPlaylistTrack() {
+  if (!playlistTrack || !playlistArtist || !playlistCover || !playlistTracks.length) return;
+
+  const currentTrack = playlistTracks[playlistIndex];
+  playlistTrack.textContent = currentTrack.title;
+  playlistArtist.textContent = currentTrack.artist;
+  playlistCover.style.background = currentTrack.art;
 }
 
 function stopAudioPreview() {
@@ -63,25 +109,91 @@ document.getElementById("heartBtn").onclick = () => {
   }
 };
 
-if (musicToggle) {
-  updateMusicToggle();
-  musicToggle.addEventListener("click", () => {
-    if (bgm.paused) {
-      startAudio();
-      return;
-    }
+if (playlistPrev && playlistNext) {
+  renderPlaylistTrack();
 
-    stopAudioPreview();
+  const showPrevTrack = () => {
+    playlistIndex = (playlistIndex - 1 + playlistTracks.length) % playlistTracks.length;
+    renderPlaylistTrack();
+  };
+
+  const showNextTrack = () => {
+    playlistIndex = (playlistIndex + 1) % playlistTracks.length;
+    renderPlaylistTrack();
+  };
+
+  playlistPrev.addEventListener("pointerup", showPrevTrack);
+  playlistNext.addEventListener("pointerup", showNextTrack);
+  playlistPrev.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") showPrevTrack();
   });
-
-  bgm.addEventListener("play", updateMusicToggle);
-  bgm.addEventListener("pause", updateMusicToggle);
-  bgm.addEventListener("ended", () => {
-    clearTimeout(audioStopTimer);
-    audioPreviewActive = false;
-    updateMusicToggle();
+  playlistNext.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") showNextTrack();
   });
 }
+
+if (draggableIpod && ipodStage) {
+  let dragging = false;
+  let startX = 0;
+  let startY = 0;
+  let initialLeft = 0;
+  let initialTop = 0;
+
+  const clampPosition = (left, top) => {
+    const maxLeft = Math.max(0, ipodStage.clientWidth - draggableIpod.offsetWidth);
+    const maxTop = Math.max(0, ipodStage.clientHeight - draggableIpod.offsetHeight);
+
+    return {
+      left: Math.min(Math.max(0, left), maxLeft),
+      top: Math.min(Math.max(0, top), maxTop)
+    };
+  };
+
+  const updatePosition = (clientX, clientY) => {
+    if (!dragging) return;
+
+    const next = clampPosition(
+      initialLeft + (clientX - startX),
+      initialTop + (clientY - startY)
+    );
+
+    draggableIpod.style.left = `${next.left}px`;
+    draggableIpod.style.top = `${next.top}px`;
+    draggableIpod.style.transform = "none";
+  };
+
+  const startDrag = (clientX, clientY) => {
+    dragging = true;
+    draggableIpod.classList.add("dragging");
+    startX = clientX;
+    startY = clientY;
+    initialLeft = draggableIpod.offsetLeft;
+    initialTop = draggableIpod.offsetTop;
+  };
+
+  const stopDrag = () => {
+    dragging = false;
+    draggableIpod.classList.remove("dragging");
+  };
+
+  draggableIpod.addEventListener("pointerdown", (event) => {
+    if (event.target.closest(".ipod-hotspot")) return;
+    startDrag(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("pointermove", (event) => {
+    updatePosition(event.clientX, event.clientY);
+  });
+
+  window.addEventListener("pointerup", stopDrag);
+  window.addEventListener("pointercancel", stopDrag);
+}
+
+bgm.addEventListener("ended", () => {
+  clearTimeout(audioStopTimer);
+  audioPreviewActive = false;
+  updateMusicToggle();
+});
 
 // Quiz
 const qs = [
