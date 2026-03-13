@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuangQin Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page-shell admin-shell">
+    <section class="card reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Admin Panel</p>
+        <h1>Moderation and Preview Controls</h1>
+        <p class="guestbook-text">Approve or hide comments, pin a featured note, and update teaser details manually.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="secondary-link" href="{{ url_for('home') }}">Back to site</a>
+        <form class="logout-form" action="{{ url_for('admin_logout') }}" method="post">
+          <button type="submit">Log out</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="card reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Upcoming Preview</p>
+        <h2>Edit Official Teaser Details</h2>
+        <p class="guestbook-text">Auto-update uses the YouTube Data API when <code>YOUTUBE_API_KEY</code> is set. Current mode: <strong>{{ settings.preview_status }}</strong>.</p>
+      </div>
+      <form class="guestbook-form" action="{{ url_for('update_content') }}" method="post">
+        <label class="guestbook-field">
+          <span>Preview Mode</span>
+          <select name="preview_mode">
+            <option value="youtube_api"{% if content.preview_feed.mode == "youtube_api" %} selected{% endif %}>YouTube API auto-update</option>
+            <option value="manual"{% if content.preview_feed.mode == "manual" %} selected{% endif %}>Manual</option>
+          </select>
+        </label>
+        <label class="guestbook-field">
+          <span>Channel ID</span>
+          <input type="text" name="channel_id" value="{{ content.preview_feed.channel_id }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Playlist ID</span>
+          <input type="text" name="playlist_id" value="{{ content.preview_feed.playlist_id }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Search Query</span>
+          <input type="text" name="search_query" value="{{ content.preview_feed.search_query }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Search Terms</span>
+          <input type="text" name="search_terms" value="{{ content.preview_feed.search_terms|join(', ') }}" placeholder="duang with you, teaser, preview">
+        </label>
+        <label class="guestbook-field">
+          <span>Episode</span>
+          <input type="number" name="episode" value="{{ preview.episode }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Release Date</span>
+          <input type="text" name="release_date" value="{{ preview.release_date }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Title</span>
+          <input type="text" name="title" value="{{ preview.title }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Summary</span>
+          <textarea name="summary" rows="3">{{ preview.summary }}</textarea>
+        </label>
+        <label class="guestbook-field">
+          <span>Source Label</span>
+          <input type="text" name="source_label" value="{{ preview.source_label }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Source URL</span>
+          <input type="url" name="source_url" value="{{ preview.source_url }}">
+        </label>
+        <label class="guestbook-field">
+          <span>YouTube Video ID</span>
+          <input type="text" name="video_id" value="{{ content.upcoming_preview.video_id or '' }}">
+        </label>
+        <label class="guestbook-field">
+          <span>Thumbnail URL</span>
+          <input type="text" name="thumbnail_url" value="{{ preview.thumbnail_url }}">
+        </label>
+        <button type="submit">Save preview</button>
+      </form>
+    </section>
+
+    <section class="card reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Comment Queue</p>
+        <h2>Review Fan Notes</h2>
+      </div>
+      <div class="guestbook-list">
+        {% for comment in comments %}
+          <article class="comment-card{% if not comment.approved %} pending{% endif %}{% if featured_comment_id == comment.id %} is-featured{% endif %}">
+            <div class="comment-head">
+              <p class="comment-name">{{ comment.name }}</p>
+              <time class="comment-time">{{ comment.created_at }}</time>
+            </div>
+            <p class="comment-message">{{ comment.message }}</p>
+            <p class="comment-status">
+              {{ "Featured note" if featured_comment_id == comment.id else ("Approved" if comment.approved else "Pending approval") }}
+              {% if report_counts.get(comment.id) %}| {{ report_counts.get(comment.id) }} reports{% endif %}
+            </p>
+            <form class="moderation-form" action="{{ url_for('admin_comment_action') }}" method="post">
+              <input type="hidden" name="comment_id" value="{{ comment.id }}">
+              {% if comment.approved %}
+                <button type="submit" name="action" value="hide">Hide</button>
+                <button type="submit" name="action" value="feature"{% if featured_comment_id == comment.id %} disabled{% endif %}>{{ "Featured" if featured_comment_id == comment.id else "Feature" }}</button>
+              {% else %}
+                <button type="submit" name="action" value="approve">Approve</button>
+              {% endif %}
+              <button type="submit" name="action" value="delete">Delete</button>
+            </form>
+          </article>
+        {% else %}
+          <p class="guestbook-empty">No comments yet.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>

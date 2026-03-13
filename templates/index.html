@@ -4,80 +4,337 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DuangQin Dream Garden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1 id="title">DuangQin Dream Garden</h1>
-  <p id="titleHint" class="title-hint">Click multiple times for the surprise</p>
-  <p class="subtitle">Pastel memories, quiz fun, whale love, and hidden easter eggs</p>
-
-  <section class="fan-hero">
-    <p class="fan-badge">Unofficial Fanhub</p>
-    <p class="fan-line">A cozy corner for every Duang With You fan: sweet memories, silly love, and healing vibes.</p>
-    <p class="fan-link">
-      Share this fan page:
-      <a href="https://kobitaistired.pythonanywhere.com" target="_blank" rel="noopener">kobitaistired.pythonanywhere.com</a>
-    </p>
-  </section>
-
-  <div class="card">
-    <h2>Qin's Whale Love Meter</h2>
-    <div class="meter"><div id="fill" class="meter-fill"></div></div>
-    <p id="meterText">Love Level: 18%</p>
-    <div class="row">
-      <button id="addLove">+ Add Whale Love</button>
-      <button id="heartBtn">Spawn Hearts</button>
-    </div>
-    <p id="secret">Easter Egg Unlocked: "pip pip pip quin!"</p>
-  </div>
-
-  <div class="card">
-    <h2>Duang or Qin?</h2>
-    <p id="qText"></p>
-    <div class="row">
-      <button id="aBtn"></button>
-      <button id="bBtn"></button>
-    </div>
-    <p id="qResult"></p>
-  </div>
-
-  <h2 class="gallery-title">Duang With You Memory Wall</h2>
-
-  <section class="fan-note-bubble">
-    <p class="fan-note-title">A Little Note From Me</p>
-    <p class="fan-note-text">
-      I made this little corner with all my love for Duang With You fans.
-      If you are here, I hope you feel warm, calm, and a little more hopeful.
-      Thank you for visiting my heart in website form.
-    </p>
-  </section>
-
-  <div id="gallery" class="gallery"></div>
-  <div id="scrollTrigger"></div>
-
-  <section class="ipod-footer">
-    <div id="draggableIpod" class="ipod-widget">
-      <div class="ipod-image-wrap">
-        <img class="ipod-image" src="{{ url_for('static', filename='images/ipod-custom.png') }}" alt="Pink iPod player">
-        <div class="ipod-screen-panel">
-          <p class="ipod-kicker">comfort zone</p>
-          <div id="playlistCover" class="ipod-cover" aria-hidden="true"></div>
-          <p id="playlistTrack" class="ipod-track">Spotify track list goes here</p>
-          <p id="playlistArtist" class="ipod-artist">Add your playlist songs to rotate here</p>
+  <main class="page-shell">
+    <section class="hero reveal">
+      <div class="hero-copy">
+        <p class="eyebrow">{{ hero_copy.eyebrow }}</p>
+        <h1 id="title">{{ hero_copy.title }}</h1>
+        <p id="titleHint" class="title-hint">Click multiple times for the surprise</p>
+        <p class="hero-lead">{{ hero_copy.lead }}</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#guestbook">Leave a Fan Note</a>
+          <a class="secondary-link" href="#memoryWall">Jump to Memory Wall</a>
         </div>
-        <button type="button" id="playlistPrev" class="ipod-hotspot hotspot-left" aria-label="Previous track"></button>
-        <a id="spotifyOpen" class="ipod-hotspot hotspot-center" href="https://open.spotify.com/playlist/6EBXTjDmIEYooZcX7EZjh2?si=4806f31139c248d1" target="_blank" rel="noopener" aria-label="Open Spotify playlist"></a>
-        <button type="button" id="playlistNext" class="ipod-hotspot hotspot-right" aria-label="Next track"></button>
+        <dl class="hero-stats">
+          <div>
+            <dt>Top mood</dt>
+            <dd>{{ top_poll_label or "Waiting for the first vote" }}</dd>
+          </div>
+          <div>
+            <dt>Fan pulse</dt>
+            <dd>{{ top_reaction_label or "Ready for reactions" }}</dd>
+          </div>
+        </dl>
       </div>
-    </div>
-  </section>
+      <div class="hero-visual">
+        {% if hero_image %}
+          <img src="{{ url_for('static', filename='images/' ~ hero_image) }}" alt="Featured Duang With You memory">
+        {% endif %}
+        <div class="hero-badge-card">
+          <p class="hero-badge-title">Featured Fan Note</p>
+          {% if featured_comment %}
+            <p class="hero-badge-quote">"{{ featured_comment.message }}"</p>
+            <p class="hero-badge-meta">{{ featured_comment.name }} | {{ featured_comment.created_at }}</p>
+          {% else %}
+            <p class="hero-badge-quote">The first approved fan note will be featured here.</p>
+            <p class="hero-badge-meta">Add one from the guestbook below.</p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
 
-  <audio id="bgm">
+    <nav class="section-nav reveal">
+      <a href="#fanPulse">Fan Pulse</a>
+      <a href="#sceneVote">Scene Vote</a>
+      <a href="#episodePreview">Episode Preview</a>
+      <a href="#memoryWall">Memory Wall</a>
+      <a href="#guestbook">Guestbook</a>
+      <a href="#playlistHub">Playlist</a>
+      <a href="#fandomNotes">Quotes + Moodboard</a>
+    </nav>
+
+    <section id="fanPulse" class="card fan-pulse reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Fan Pulse</p>
+        <h2>How Are Fans Feeling Today?</h2>
+        <p class="guestbook-text">Shared reactions update the whole page. The most popular feeling gets highlighted in the hero above.</p>
+      </div>
+      <div class="reaction-grid">
+        {% for key, label in reaction_labels.items() %}
+          <form class="reaction-form" action="{{ url_for('add_reaction') }}" method="post" data-persist-key="reaction">
+            <input type="hidden" name="reaction" value="{{ key }}">
+            <button class="reaction-button{% if key == top_reaction_key %} is-leading{% endif %}" type="submit">
+              <span class="reaction-chip">{{ "Leading" if key == top_reaction_key else "Tap to react" }}</span>
+              <span class="reaction-label">{{ label }}</span>
+              <span class="reaction-count">{{ reactions[key] }}</span>
+            </button>
+          </form>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="sceneVote" class="card scene-vote reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Favorite Scene Vote</p>
+        <h2>Which DuangQin Mood Wins?</h2>
+        <p class="guestbook-text">Voting is persistent, and the leading mood is used as the current fandom headline.</p>
+      </div>
+      <div class="poll-layout">
+        <form class="poll-form" action="{{ url_for('add_vote') }}" method="post" data-persist-key="vote">
+          {% for key, label in poll_labels.items() %}
+            <button class="poll-option{% if key == top_poll_key %} is-leading{% endif %}" type="submit" name="choice" value="{{ key }}">{{ label }}</button>
+          {% endfor %}
+        </form>
+        <div class="poll-results">
+          {% set total_votes = poll.values()|sum %}
+          {% for key, label in poll_labels.items() %}
+            {% set count = poll[key] %}
+            {% set percentage = ((count / total_votes) * 100) if total_votes else 0 %}
+            <div class="poll-row{% if key == top_poll_key %} is-leading{% endif %}">
+              <div class="poll-meta">
+                <span>{{ label }}</span>
+                <strong>{{ count }}</strong>
+              </div>
+              <div class="poll-bar">
+                <span class="poll-fill" data-width="{{ '%.2f'|format(percentage) }}"></span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="episodePreview" class="episode-preview reveal">
+      <div class="section-intro">
+        <p class="eyebrow">Episode Preview</p>
+        <h2>Released Episodes and Upcoming Teaser</h2>
+        <p class="section-summary">Released episodes stay spoiler-light. The teaser block uses the official preview source you control manually.</p>
+      </div>
+      <article class="card upcoming-preview-card reveal">
+        <div class="upcoming-preview-layout">
+          <div class="camera-preview-shell">
+            <img class="camera-preview-image" src="{{ url_for('static', filename='images/camera-preview.png') }}" alt="Digital camera frame">
+            <div class="camera-screen">
+              <button
+                type="button"
+                class="camera-video-frame camera-launch"
+                id="cameraLaunch"
+                data-embed-url="{{ upcoming_preview.embed_url or '' }}"
+                aria-label="Play official teaser in camera">
+                <img class="camera-thumb" src="{{ upcoming_preview.thumbnail_url }}" alt="{{ upcoming_preview.title }}">
+                <span class="camera-play-badge">Play Official Teaser</span>
+              </button>
+              <div class="camera-player is-hidden" id="cameraPlayer">
+                <iframe
+                  id="cameraIframe"
+                  src=""
+                  title="Official upcoming episode preview"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="camera-status{% if upcoming_preview.status == 'live' %} is-live{% else %} is-fallback{% endif %}">
+                {{ "Live official teaser" if upcoming_preview.status == "live" else "Waiting for official teaser" }}
+              </div>
+            </div>
+          </div>
+          <div class="upcoming-preview-copy">
+            <p class="upcoming-kicker">{{ upcoming_preview.headline }}</p>
+            <h3>Episode {{ upcoming_preview.episode }} - {{ upcoming_preview.release_date }}</h3>
+            <p class="upcoming-ai-label">Official YouTube preview</p>
+            <p class="upcoming-summary">{{ upcoming_preview.summary }}</p>
+            <p class="upcoming-video-title">{{ upcoming_preview.title }}</p>
+            <p class="upcoming-source">
+              Source:
+              <a href="{{ upcoming_preview.source_url }}" target="_blank" rel="noopener">{{ upcoming_preview.source_label }}</a>
+            </p>
+          </div>
+        </div>
+      </article>
+      <div class="episode-grid">
+        {% for item in episode_briefs %}
+          <article class="card episode-card{% if loop.last %} is-current{% endif %} reveal">
+            <div class="episode-topline">
+              <p class="episode-number">Episode {{ item.episode }}</p>
+              <span class="episode-tag">{{ item.tag }}</span>
+            </div>
+            <p class="episode-date">{{ item.release_date }}</p>
+            <p class="episode-summary">{{ item.summary }}</p>
+            <p class="episode-tone"><strong>Vibe:</strong> {{ item.tone }}</p>
+            <p class="episode-note">{{ "Built from available synopsis info." if item.source_based else "Based on current series tone." }}</p>
+            {% if not item.source_based %}
+              <p class="episode-ai-bubble">AI summary</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="memoryWall" class="memory-wall reveal">
+      <div class="section-intro">
+        <p class="eyebrow">Memory Lane</p>
+        <h2>Featured Frames and Soft Chaos</h2>
+        <p class="section-summary">Curated image cards pull from the structured gallery data now, not a random file loop.</p>
+      </div>
+      <section class="fan-note-bubble">
+        <p class="fan-note-title">A Little Note From Me</p>
+        <p class="fan-note-text">
+          I made this little corner with all my love for Duang With You fans.
+          If you are here, I hope you feel warm, calm, and a little more hopeful.
+          Thank you for visiting my heart in website form.
+        </p>
+      </section>
+      <div id="gallery" class="gallery"></div>
+      <div id="scrollTrigger"></div>
+    </section>
+
+    <section id="guestbook" class="guestbook card reveal">
+      <div class="section-copy">
+        <p class="eyebrow">Guestbook</p>
+        <h2>Leave a Note for Other Fans</h2>
+        <p class="guestbook-text">Comments stay hidden until approved. Featured notes are pinned from the admin page.</p>
+      </div>
+      <form class="guestbook-form" action="{{ url_for('add_comment') }}" method="post">
+        <label class="guestbook-field">
+          <span>Name</span>
+          <input type="text" name="name" maxlength="40" placeholder="Your fan name" required>
+        </label>
+        <label class="guestbook-field">
+          <span>Comment</span>
+          <textarea name="message" maxlength="280" rows="4" placeholder="Write your note here..." required></textarea>
+        </label>
+        <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Post to Memory Wall</button>
+      </form>
+
+      <div class="guestbook-list" aria-live="polite">
+        {% if comments %}
+          {% for comment in comments %}
+            <article class="comment-card">
+              <div class="comment-head">
+                <p class="comment-name">{{ comment.name }}</p>
+                <time class="comment-time">{{ comment.created_at }}</time>
+              </div>
+              <p class="comment-message">{{ comment.message }}</p>
+              <form class="report-form" action="{{ url_for('report_comment') }}" method="post">
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                <button type="submit">Report</button>
+              </form>
+            </article>
+          {% endfor %}
+        {% else %}
+          <p class="guestbook-empty">No fan notes yet. Be the first one on the wall.</p>
+        {% endif %}
+      </div>
+
+      <div class="moderation-toggle">
+        {% if is_admin %}
+          <a href="{{ url_for('admin') }}">Open admin panel{% if pending_comment_count %} ({{ pending_comment_count }} pending){% endif %}</a>
+        {% else %}
+          <form class="moderation-access-form" action="{{ url_for('admin_login') }}" method="post">
+            <input class="moderation-code" type="password" name="admin_code" placeholder="Admin code for moderation" required>
+            <button type="submit">Unlock admin</button>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+
+    <section id="playlistHub" class="playlist-stage reveal">
+      <div class="section-intro">
+        <p class="eyebrow">Playlist Corner</p>
+        <h2>Soundtrack for the Slow Burn</h2>
+      </div>
+      <section class="ipod-footer">
+        <div id="draggableIpod" class="ipod-widget">
+          <div class="ipod-image-wrap">
+            <img class="ipod-image" src="{{ url_for('static', filename='images/ipod-custom.png') }}" alt="Pink iPod player">
+            <div class="ipod-screen-panel">
+              <div id="playlistCover" class="ipod-cover" aria-hidden="true"></div>
+              <p id="playlistTrack" class="ipod-track">Spotify track list goes here</p>
+              <p id="playlistArtist" class="ipod-artist">Add your playlist songs to rotate here</p>
+            </div>
+            <button type="button" id="playlistPrev" class="ipod-hotspot hotspot-left" aria-label="Previous track"></button>
+            <a id="spotifyOpen" class="ipod-hotspot hotspot-center" href="https://open.spotify.com/playlist/6EBXTjDmIEYooZcX7EZjh2?si=4806f31139c248d1" target="_blank" rel="noopener" aria-label="Open Spotify playlist"></a>
+            <button type="button" id="playlistNext" class="ipod-hotspot hotspot-right" aria-label="Next track"></button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section id="fandomNotes" class="hub-grid reveal">
+      <article class="card hub-card">
+        <p class="eyebrow">Best Quotes</p>
+        <h2>Lines That Stay With You</h2>
+        <ul class="hub-list">
+          {% for quote in quotes %}
+            <li>{{ quote }}</li>
+          {% else %}
+            <li>No quotes configured yet.</li>
+          {% endfor %}
+        </ul>
+      </article>
+      <article class="card hub-card">
+        <p class="eyebrow">Episode Moodboard</p>
+        <h2>Visual Energy</h2>
+        <div class="mood-tags">
+          {% for tag in mood_tags %}
+            <span>{{ tag }}</span>
+          {% else %}
+            <span>soft healing</span>
+          {% endfor %}
+        </div>
+      </article>
+      <article class="card hub-card">
+        <p class="eyebrow">Fan Playlist Notes</p>
+        <h2>What the Songs Feel Like</h2>
+        <ul class="hub-list">
+          {% for item in playlist_notes %}
+            <li>{{ item }}</li>
+          {% else %}
+            <li>No playlist notes configured yet.</li>
+          {% endfor %}
+        </ul>
+      </article>
+    </section>
+
+    <section class="card interactive-stack reveal">
+      <h2>Keep the Playful Parts</h2>
+      <p class="section-summary">The iPod stays as a playful extra. The short audio preview still triggers from the playful widgets.</p>
+      <div class="interactive-grid">
+        <div class="mini-card">
+          <h3>Qin's Whale Love Meter</h3>
+          <div class="meter"><div id="fill" class="meter-fill"></div></div>
+          <p id="meterText">Love Level: 18%</p>
+          <div class="row">
+            <button id="addLove" type="button">+ Add Whale Love</button>
+            <button id="heartBtn" type="button">Spawn Hearts</button>
+          </div>
+          <p id="secret">Easter Egg Unlocked: "pip pip pip quin!"</p>
+        </div>
+        <div class="mini-card">
+          <h3>Duang or Qin?</h3>
+          <p id="qText"></p>
+          <div class="row">
+            <button id="aBtn" type="button"></button>
+            <button id="bBtn" type="button"></button>
+          </div>
+          <p id="qResult"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="bgm" preload="auto" playsinline>
     <source src="{{ url_for('static', filename='sounds/duang.mp3') }}" type="audio/mpeg">
   </audio>
 
-  <script id="images-data" type="application/json">{{ images|tojson }}</script>
+  <script id="images-data" type="application/json">{{ gallery_items|tojson }}</script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-

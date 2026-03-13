@@ -1,0 +1,80 @@
+{
+  "hero": {
+    "eyebrow": "Unofficial Duang With You Fanhub",
+    "title": "DuangQin Dream Garden",
+    "lead": "A softer, more curated fan space for slow-burn romance, comfort scenes, playlist feelings, and all the little DuangQin moments that stay with you.",
+    "preferred_image": "DUANG WITH YOU TRAILER.jfif"
+  },
+  "reactions": {
+    "kick": "Kicking my feet",
+    "cry": "Crying in bed",
+    "butterfly": "Butterflies"
+  },
+  "poll_options": {
+    "confession": "Confession scene",
+    "care": "Quiet care moments",
+    "jealous": "Jealous chaos",
+    "comfort": "Soft comfort ending"
+  },
+  "episode_briefs": [
+    {
+      "episode": 1,
+      "release_date": "Feb 7, 2026",
+      "tag": "Setup",
+      "summary": "A first-sight crush turns into a full emotional mission as Duang decides Qin is worth chasing, even before he knows how to do it well.",
+      "tone": "high-energy pursuit, instant fixation, campus spark",
+      "source_based": true
+    },
+    {
+      "episode": 2,
+      "release_date": "Feb 14, 2026",
+      "tag": "Push-Pull",
+      "summary": "The second step is less about grand flirting and more about learning that sincerity lands harder than performance.",
+      "tone": "awkward charm, mixed signals, trying too hard",
+      "source_based": true
+    },
+    {
+      "episode": 3,
+      "release_date": "Feb 21, 2026",
+      "tag": "Closer Orbit",
+      "summary": "An assigned partnership shifts the dynamic from one-sided pursuit into shared space, where chemistry has more room to breathe.",
+      "tone": "forced proximity, teamwork tension, growing softness",
+      "source_based": true
+    },
+    {
+      "episode": 4,
+      "release_date": "Feb 28, 2026",
+      "tag": "Slow Burn",
+      "summary": "The relationship starts feeling less chaotic and more intimate, with quiet care doing more work than big declarations.",
+      "tone": "domestic warmth, emotional settling, soft glances",
+      "source_based": false
+    },
+    {
+      "episode": 5,
+      "release_date": "Mar 7, 2026",
+      "tag": "Mutual Shift",
+      "summary": "The balance starts changing, and the connection feels more mutual, more careful, and harder to ignore.",
+      "tone": "shared longing, guarded honesty, rising stakes",
+      "source_based": false
+    },
+    {
+      "episode": 6,
+      "release_date": "Mar 13, 2026",
+      "tag": "Current Latest",
+      "summary": "The slow burn matures into something steadier, where trust, timing, and emotional restraint matter more than spectacle.",
+      "tone": "trust-building, quiet intensity, earned closeness",
+      "source_based": false
+    }
+  ],
+  "upcoming_preview": {
+    "episode": 7,
+    "release_date": "Mar 20, 2026",
+    "headline": "Upcoming Episode",
+    "title": "Official teaser not released yet",
+    "summary": "The camera will switch to the newest official preview automatically once Domundi releases it.",
+    "source_label": "Official Mandee Work YouTube videos",
+    "source_url": "https://www.youtube.com/@MandeeWork/videos",
+    "video_id": null,
+    "thumbnail_url": "/static/images/DUANG WITH YOU TRAILER.jfif"
+  }
+}

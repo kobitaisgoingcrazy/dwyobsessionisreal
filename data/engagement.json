@@ -1,0 +1,13 @@
+{
+  "reactions": {
+    "kick": 1,
+    "cry": 3,
+    "butterfly": 1
+  },
+  "poll": {
+    "confession": 0,
+    "care": 0,
+    "jealous": 0,
+    "comfort": 0
+  }
+}

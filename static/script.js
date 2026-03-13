@@ -9,11 +9,16 @@ const playlistArtist = document.getElementById("playlistArtist");
 const playlistCover = document.getElementById("playlistCover");
 const draggableIpod = document.getElementById("draggableIpod");
 const ipodStage = document.querySelector(".ipod-footer");
+const revealNodes = document.querySelectorAll(".reveal");
+const pollFills = document.querySelectorAll(".poll-fill");
+const cameraLaunch = document.getElementById("cameraLaunch");
+const cameraPlayer = document.getElementById("cameraPlayer");
+const cameraIframe = document.getElementById("cameraIframe");
 
 const playlistTracks = [
   { title: "จบไม่จบ (Someday, Say Yes)", artist: "PROXIE", art: "url('/static/images/covers/Screenshot 2026-03-10 205056.png') center/cover no-repeat" },
   { title: "Take Our Time", artist: "JINWOOK OF BUS, PHUTATCHAI OF BUS", art: "url('/static/images/covers/Screenshot 2026-03-10 205826.png') center/cover no-repeat" },
-  { title: "ไม่ซู้สแต่ไม่ท้อ (Don't Give Up)", artist: "TEETEE", art: "url('/static/images/covers/Screenshot 2026-03-10 205913.png') center/cover no-repeat" },
+  { title: "ไม่สู้แต่ไม่ถอย (Don't Give Up)", artist: "TEETEE", art: "url('/static/images/covers/Screenshot 2026-03-10 205913.png') center/cover no-repeat" },
   { title: "BOOM 1000%", artist: "TEETEE, North Chatchapon, Wave Thanapon", art: "url('/static/images/covers/Screenshot 2026-03-10 205940.png') center/cover no-repeat" },
   { title: "จังหวะยอมรัก (Heart's Timing)", artist: "Por Suppakarn", art: "url('/static/images/covers/Screenshot 2026-03-10 210019.png') center/cover no-repeat" },
   { title: "สิ่งที่แสนดี", artist: "Tattoo Colour", art: "url('/static/images/covers/sing-tee-saen-dee.png') center/cover no-repeat" },
@@ -29,7 +34,7 @@ const playlistTracks = [
   { title: "วันศุกร์", artist: "Plastic Plastic", art: "url('/static/images/covers/Screenshot 2026-03-10 210242.png') center/cover no-repeat" },
   { title: "ว้าวุ่น (On A Date)", artist: "YENTED", art: "url('/static/images/covers/Screenshot 2026-03-10 210253.png') center/cover no-repeat" },
   { title: "Baby", artist: "ADOY", art: "url('/static/images/covers/Screenshot 2026-03-10 210303.png') center/cover no-repeat" },
-  { title: "ให้ฉันดูแลเธอ", artist: "รถแห่วงคาโรจน์", art: "url('/static/images/covers/Screenshot 2026-03-10 210315.png') center/cover no-repeat" },
+  { title: "ให้ฉันดูแลเธอ", artist: "รถแห่วงคาราวาน", art: "url('/static/images/covers/Screenshot 2026-03-10 210315.png') center/cover no-repeat" },
   { title: "Obsessed", artist: "PUN, Jaonaay", art: "url('/static/images/covers/Screenshot 2026-03-10 210326.png') center/cover no-repeat" },
   { title: "ปฏิเสธไม่ไหว", artist: "Lipta, No One Else", art: "url('/static/images/covers/Screenshot 2026-03-10 210336.png') center/cover no-repeat" },
   { title: "It's Always You", artist: "Chet Baker", art: "url('/static/images/covers/Screenshot 2026-03-10 210349.png') center/cover no-repeat" },
@@ -37,7 +42,7 @@ const playlistTracks = [
   { title: "ชาติหน้าช้าไป (K.O.)", artist: "Dept", art: "url('/static/images/covers/Screenshot 2026-03-10 210409.png') center/cover no-repeat" },
   { title: "เวลา", artist: "Pop Pongkool", art: "url('/static/images/covers/Screenshot 2026-03-10 210422.png') center/cover no-repeat" },
   { title: "เพราะเธอนั้นเป็นเหมือนดั่งโลกทั้งใบ", artist: "Dept", art: "url('/static/images/covers/Screenshot 2026-03-10 210434.png') center/cover no-repeat" },
-  { title: "คนเดียวบนโลก(U)", artist: "Anatomy Rabbit", art: "url('/static/images/covers/Screenshot 2026-03-10 210443.png') center/cover no-repeat" },
+  { title: "คนเดียวบนโลก (U)", artist: "Anatomy Rabbit", art: "url('/static/images/covers/Screenshot 2026-03-10 210443.png') center/cover no-repeat" },
   { title: "ฟ้าครึ้ม ๆ", artist: "SCRUBB", art: "url('/static/images/covers/Screenshot 2026-03-10 210453.png') center/cover no-repeat" }
 ];
 let playlistIndex = 0;
@@ -48,7 +53,6 @@ function updateMusicToggle() {
 
 function renderPlaylistTrack() {
   if (!playlistTrack || !playlistArtist || !playlistCover || !playlistTracks.length) return;
-
   const currentTrack = playlistTracks[playlistIndex];
   playlistTrack.textContent = currentTrack.title;
   playlistArtist.textContent = currentTrack.artist;
@@ -58,35 +62,48 @@ function renderPlaylistTrack() {
 function stopAudioPreview() {
   clearTimeout(audioStopTimer);
   audioPreviewActive = false;
+  if (!bgm) return;
   bgm.pause();
   bgm.currentTime = 0;
   updateMusicToggle();
 }
 
 function startAudio() {
-  if (audioPreviewActive) return;
+  if (!bgm) return;
+  clearTimeout(audioStopTimer);
+  bgm.pause();
+  bgm.currentTime = 0;
+  bgm.volume = 0.35;
+
+  const beginPreview = () => {
+    audioPreviewActive = true;
+    bgm.play().then(() => {
+      audioStopTimer = setTimeout(stopAudioPreview, AUDIO_PREVIEW_MS);
+      updateMusicToggle();
+    }).catch(() => {
+      audioPreviewActive = false;
+    });
+  };
+
+  if (bgm.readyState >= 2) {
+    beginPreview();
+    return;
+  }
 
   audioPreviewActive = true;
-  bgm.volume = 0.35;
-  bgm.currentTime = 0;
-  bgm.play().then(() => {
-    audioStopTimer = setTimeout(stopAudioPreview, AUDIO_PREVIEW_MS);
-    updateMusicToggle();
-  }).catch(() => {
-    audioPreviewActive = false;
-  });
+  bgm.addEventListener("canplaythrough", beginPreview, { once: true });
+  bgm.load();
 }
 
 function spawn(char) {
   const el = document.createElement("div");
   el.className = "float";
   el.textContent = char;
-  el.style.left = Math.random() * 95 + "vw";
+  el.style.left = `${Math.random() * 95}vw`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 3500);
 }
 
-// Love meter
 let love = 18;
 const fill = document.getElementById("fill");
 const meterText = document.getElementById("meterText");
@@ -95,7 +112,7 @@ const secret = document.getElementById("secret");
 document.getElementById("addLove").onclick = () => {
   startAudio();
   love = Math.min(100, love + 7);
-  fill.style.width = love + "%";
+  fill.style.width = `${love}%`;
   meterText.textContent = `Love Level: ${love}%`;
   spawn("\uD83D\uDC0B");
   if (love >= 90) secret.style.display = "block";
@@ -142,7 +159,6 @@ if (draggableIpod && ipodStage) {
   const clampPosition = (left, top) => {
     const maxLeft = Math.max(0, ipodStage.clientWidth - draggableIpod.offsetWidth);
     const maxTop = Math.max(0, ipodStage.clientHeight - draggableIpod.offsetHeight);
-
     return {
       left: Math.min(Math.max(0, left), maxLeft),
       top: Math.min(Math.max(0, top), maxTop)
@@ -151,12 +167,7 @@ if (draggableIpod && ipodStage) {
 
   const updatePosition = (clientX, clientY) => {
     if (!dragging) return;
-
-    const next = clampPosition(
-      initialLeft + (clientX - startX),
-      initialTop + (clientY - startY)
-    );
-
+    const next = clampPosition(initialLeft + (clientX - startX), initialTop + (clientY - startY));
     draggableIpod.style.left = `${next.left}px`;
     draggableIpod.style.top = `${next.top}px`;
     draggableIpod.style.transform = "none";
@@ -181,21 +192,19 @@ if (draggableIpod && ipodStage) {
     startDrag(event.clientX, event.clientY);
   });
 
-  window.addEventListener("pointermove", (event) => {
-    updatePosition(event.clientX, event.clientY);
-  });
-
+  window.addEventListener("pointermove", (event) => updatePosition(event.clientX, event.clientY));
   window.addEventListener("pointerup", stopDrag);
   window.addEventListener("pointercancel", stopDrag);
 }
 
-bgm.addEventListener("ended", () => {
-  clearTimeout(audioStopTimer);
-  audioPreviewActive = false;
-  updateMusicToggle();
-});
+if (bgm) {
+  bgm.addEventListener("ended", () => {
+    clearTimeout(audioStopTimer);
+    audioPreviewActive = false;
+    updateMusicToggle();
+  });
+}
 
-// Quiz
 const qs = [
   { q: "Crush seen with someone else?", a: ["Act calm, overthink later", "duang"], b: ["Instant jealousy mode", "quin"] },
   { q: "No reply for hours?", a: ["Pretend okay", "duang"], b: ["Double text now", "quin"] },
@@ -248,32 +257,33 @@ function renderQ() {
 
 function pick(type) {
   startAudio();
-  if (type === "duang") d++; else qn++;
-  qi++;
-  if (qi < qs.length) return renderQ();
+  if (type === "duang") d += 1; else qn += 1;
+  qi += 1;
+  if (qi < qs.length) {
+    renderQ();
+    return;
+  }
   aBtn.style.display = "none";
   bBtn.style.display = "none";
   qText.textContent = "Quiz complete!";
-  qResult.textContent = d >= qn ? "Result: DUANG energy \uD83D\uDC99" : "Result: QUIN energy \u2764\uFE0F";
+  qResult.textContent = d >= qn ? "Result: DUANG energy 💙" : "Result: QUIN energy ❤️";
 }
 
 aBtn.onclick = () => pick(qs[qi].a[1]);
 bBtn.onclick = () => pick(qs[qi].b[1]);
 renderQ();
 
-// Title easter egg
 let t = 0;
 document.getElementById("title").onclick = () => {
   startAudio();
-  t++;
-  spawn("\u2728");
+  t += 1;
+  spawn("✨");
   if (t === 5) {
     alert("Easter Egg: duangquin teeteeetee duang!");
     t = 0;
   }
 };
 
-// Polaroid notes
 const notePool = [
   "Duang: Qin, drink this first. You look tired. Qin: You noticed again.",
   "Qin: Why are you smiling at me? Duang: Seeing you is already a good day.",
@@ -317,8 +327,7 @@ const notePool = [
   "Qin: Why do I feel safe here? Duang: Because I will not let go."
 ];
 
-// Infinite floating polaroid gallery
-const allImages = JSON.parse(document.getElementById("images-data").textContent).filter((file) => !/dolphin|dolphine/i.test(file));
+const allImages = JSON.parse(document.getElementById("images-data").textContent).filter((item) => item && item.file);
 const gallery = document.getElementById("gallery");
 const trigger = document.getElementById("scrollTrigger");
 let idx = 0;
@@ -328,50 +337,43 @@ let noteIdx = 0;
 
 function attachDoubleTap(card) {
   let lastTap = 0;
-
-  const toggle = () => {
-    card.classList.toggle("show-note");
-  };
-
+  const toggle = () => card.classList.toggle("show-note");
   card.addEventListener("dblclick", toggle);
-
   card.addEventListener("touchend", () => {
     const now = Date.now();
     if (now - lastTap < 320) toggle();
     lastTap = now;
   }, { passive: true });
-
-  const hintBtn = card.querySelector(".note-hint");
-  hintBtn.addEventListener("click", toggle);
+  card.querySelector(".note-hint").addEventListener("click", toggle);
 }
 
 function addBatch() {
   if (!allImages.length || idx >= allImages.length) return;
 
-  for (let n = 0; n < batchSize && idx < allImages.length; n++) {
-    const file = allImages[idx++];
+  for (let n = 0; n < batchSize && idx < allImages.length; n += 1) {
+    const image = allImages[idx++];
     const note = notePool[noteIdx % notePool.length];
-    noteIdx++;
-
+    noteIdx += 1;
     const card = document.createElement("article");
     card.className = "photo-card";
     card.style.setProperty("--tilt", `${(Math.random() * 8 - 4).toFixed(2)}deg`);
     card.style.setProperty("--delay", `${(Math.random() * 1.8).toFixed(2)}s`);
+    const cardIndex = idx - 1;
+    if (cardIndex % 7 === 0) card.classList.add("is-featured");
+    else if (cardIndex % 5 === 0) card.classList.add("is-wide");
+    else if (cardIndex % 4 === 0) card.classList.add("is-tall");
     card.innerHTML = `
       <span class="ribbon" aria-hidden="true"></span>
-      <img src="/static/images/${encodeURIComponent(file)}" alt="${file}">
-      <p>Duang With You</p>
+      <img src="/static/images/${encodeURIComponent(image.file)}" alt="${image.alt}">
+      <p>${image.title}</p>
       <button type="button" class="note-hint">Tap it for your own good^^</button>
-      <div class="love-note">${note}</div>
+      <div class="love-note">${image.caption}<br><br>${note}</div>
     `;
-
     attachDoubleTap(card);
     gallery.appendChild(card);
   }
 
-  if (idx >= allImages.length) {
-    if (io) io.disconnect();
-  }
+  if (idx >= allImages.length && io) io.disconnect();
 }
 
 shuffleList(allImages);
@@ -381,5 +383,44 @@ addBatch();
 io = new IntersectionObserver((entries) => {
   if (entries[0].isIntersecting) addBatch();
 }, { rootMargin: "260px" });
-
 io.observe(trigger);
+
+pollFills.forEach((fillBar) => {
+  requestAnimationFrame(() => {
+    fillBar.style.width = `${fillBar.dataset.width}%`;
+  });
+});
+
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add("is-visible");
+    observer.unobserve(entry.target);
+  });
+}, { threshold: 0.16, rootMargin: "0px 0px -40px 0px" });
+revealNodes.forEach((node) => revealObserver.observe(node));
+
+if (cameraLaunch && cameraPlayer && cameraIframe) {
+  cameraLaunch.addEventListener("click", () => {
+    const embedUrl = cameraLaunch.dataset.embedUrl;
+    if (!embedUrl) return;
+    cameraIframe.src = embedUrl;
+    cameraPlayer.classList.remove("is-hidden");
+    cameraLaunch.classList.add("is-hidden");
+  });
+}
+
+document.querySelectorAll("form[data-persist-key]").forEach((form) => {
+  const persistKey = form.dataset.persistKey;
+  const storageKey = `duang_with_you_${persistKey}`;
+  if (window.localStorage.getItem(storageKey)) {
+    form.querySelectorAll("button").forEach((button) => {
+      button.disabled = true;
+      button.textContent = persistKey === "vote" ? "Vote saved on this device" : "Reaction saved on this device";
+    });
+  }
+
+  form.addEventListener("submit", () => {
+    window.localStorage.setItem(storageKey, "1");
+  });
+});
